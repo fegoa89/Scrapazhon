@@ -1,5 +1,13 @@
-from scrapazhon import *
-# Create an object of Scraper class & call a method of it
+import bs4
+
+import scrapazhon
+
+from bs4                    import BeautifulSoup
+
+from scrapazhon.request     import Request
+
+from scrapazhon.html_parser import HtmlParser
+
 
 response = Request("http://www.amazon.com/appstore").getHtmlfromUrl()
 
