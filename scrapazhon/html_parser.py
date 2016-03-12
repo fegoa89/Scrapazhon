@@ -31,7 +31,7 @@ class HtmlParser:
             rowHash["row_label"] = row.find("h2", {"class": "s9Header"}).get_text()
             if appInRow:
                 appsDictionary["app_name"] = appInRow.find("span", {"class": "s9TitleText"}).get_text()
-                appsDictionary["app_icon"] = appInRow.find("div", {"class": "imageContainer"}).find('img')["src"]
+                appsDictionary["app_icon"] = appInRow.find("div", {"class": "imageContainer"}).find('img').get("url")
                 appsDictionary["app_id"]   = self.extractAppIDFromLink(appInRow.find("a", {"class": "title ntTitle noLinkDecoration"})["href"])
                 appCount                   = appCount + 1
                 appsInRowList.append(appsDictionary)
