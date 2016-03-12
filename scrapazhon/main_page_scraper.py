@@ -1,12 +1,13 @@
 from bs4 import BeautifulSoup
 import time
-class HtmlParser:
+
+class MainPageScraper:
     def __init__(self, raw_html):
         ''' Constructor for this class. '''
         # Initializer
         self.raw_html = raw_html
 
-    def mainPageApps(self):
+    def collectApps(self):
         print("Parsing HTML")
         soup = BeautifulSoup(self.raw_html, "lxml")
         listOfAppsInMainPage = []

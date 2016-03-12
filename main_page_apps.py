@@ -2,13 +2,20 @@ import bs4
 
 import scrapazhon
 
-from bs4                    import BeautifulSoup
+from bs4                          import BeautifulSoup
 
-from scrapazhon.request     import Request
+from scrapazhon.request           import Request
 
-from scrapazhon.html_parser import HtmlParser
+from scrapazhon.main_page_scraper import MainPageScraper
 
+class MainPageApps:
+    def __init__(self):
+        self.url = "http://www.amazon.com/appstore"
 
-response = Request("http://www.amazon.com/appstore").getHtmlfromUrl()
+    def scrape(self):
+        MainPageScraper(self.htmlResponse()).collectApps()
 
-HtmlParser(response).mainPageApps()
+    def htmlResponse(self):
+        return Request(self.url).getHtmlfromUrl()
+
+MainPageApps().scrape()
