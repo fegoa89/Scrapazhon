@@ -15,8 +15,10 @@ class Request:
         except HTTPError as e:
             print 'The server couldn\'t fulfill the request.'
             print 'Error code: ', e.code
+            raise HTTPError, e.code
         except URLError as e:
             print 'We failed to reach a server.'
             print 'Reason: ', e.reason
+            raise URLError, e.reason
         else:
             return response.read()
