@@ -16,6 +16,6 @@ class MainPageApps:
         MainPageScraper(self.htmlResponse()).collectApps()
 
     def htmlResponse(self):
-        return Request(self.url).getHtmlfromUrl()
+        return Request(self.url).getHtmlFromUrl()["response"]
 
 MainPageApps().scrape()

@@ -7,7 +7,7 @@ class Request:
         # Initializer
         self.url = url
 
-    def getHtmlfromUrl(self):
+    def getHtmlFromUrl(self):
         print("Executing request for url : %s" % self.url)
         req = urllib2.Request(self.url)
         try:
@@ -21,4 +21,4 @@ class Request:
             print 'Reason: ', e.reason
             raise URLError, e.reason
         else:
-            return response.read()
+            return { "code" : response.code, "response" : response.read() }
