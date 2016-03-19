@@ -29,11 +29,11 @@ class MainPageScraper:
         while stillAppsOnTheRow:
             appContainer         = "fluid asin s9a%s" % ( appCount )
             appInRow             = row.find("div", {"class": appContainer})
-            rowHash["row_label"] = row.find("h2", {"class": "s9Header"}).get_text()
+            rowHash["rowLabel"] = row.find("h2", {"class": "s9Header"}).get_text()
             if appInRow:
-                appsDictionary["app_name"] = appInRow.find("span", {"class": "s9TitleText"}).get_text()
-                appsDictionary["app_icon"] = appInRow.find("div", {"class": "imageContainer"}).find('img').get("url")
-                appsDictionary["app_id"]   = self.extractAppIDFromLink(appInRow.find("a", {"class": "title ntTitle noLinkDecoration"})["href"])
+                appsDictionary["appName"] = appInRow.find("span", {"class": "s9TitleText"}).get_text()
+                appsDictionary["appIcon"] = appInRow.find("div", {"class": "imageContainer"}).find('img').get("url")
+                appsDictionary["appId"]   = self.extractAppIDFromLink(appInRow.find("a", {"class": "title ntTitle noLinkDecoration"})["href"])
                 appCount                   = appCount + 1
                 appsInRowList.append(appsDictionary)
             else:
