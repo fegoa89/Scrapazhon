@@ -71,7 +71,7 @@ class AppMetaDataScraper:
             if len(anchorCategoryElement) > 0:
                 # The category id's that this app belongs to is defined in the link 
                 # of the breadcrumb.
-                categories.append(anchorCategoryElement[0]["href"].split("node=")[1])
+                categories.append(int(anchorCategoryElement[0]["href"].split("node=")[1]))
 
         return categories
 
