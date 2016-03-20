@@ -40,6 +40,8 @@ class AppMetaDataScraper:
         metaDataDictionary["keywords"] = self.keywords()
         metaDataDictionary["price"] = self.price()
         metaDataDictionary["appPublisherName"] = self.appPublisherName()
+        metaDataDictionary["customerReviewsCount"] = self.customerReviewsCount()
+        metaDataDictionary["averageCustomerReview"] = self.averageCustomerReview()
         pprint.pprint(metaDataDictionary)
 
     def appId(self):
@@ -83,6 +85,18 @@ class AppMetaDataScraper:
 
     def appPublisherName(self):
         return self.soupObject().find("div", {"class":"buying"}).find("a").get_text()
+
+    def customerReviewsCount(self):
+        reviewCount = self.soupObject().find("span", { "class":"dpAppstore%s" % (self.appId()) })
+        # Strip and replace string
+        reviewCountNumber = reviewCount.find("span", {"class":"a-size-small"}).get_text().replace(" customer reviews","").strip()
+        # return as an integer
+        return int(reviewCountNumber.replace(",",""))
+
+    def averageCustomerReview(self):
+        reviewAverage = self.soupObject().find("span", { "class":"dpAppstore%s" % (self.appId()) })
+        reviewAverageNumber = reviewAverage.find("a", {"class":"a-link-normal a-text-normal"}).get_text().replace(" out of 5 stars","").strip()
+        return float(reviewAverageNumber)
 
     def soupObject(self):
         soup = BeautifulSoup(self.rawHtml, "lxml")
