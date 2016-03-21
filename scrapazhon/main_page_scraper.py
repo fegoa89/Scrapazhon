@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup
 import time
 
-import pprint
-
 class MainPageScraper:
     def __init__(self, raw_html):
         ''' Constructor for this class. '''
@@ -17,7 +15,7 @@ class MainPageScraper:
         for row in soup.select("div.a-section.unified_widget.rcm.widget.rcm.s9Widget"):
             listOfAppsInMainPage.append(self.appsInRow(row))
 
-        pprint.pprint(listOfAppsInMainPage)
+        return listOfAppsInMainPage
 
     def appsInRow(self, row):
         rowHash             = {}
@@ -25,10 +23,10 @@ class MainPageScraper:
         rowHash["apps"]     = []
         rowHash["rowLabel"] = row.find("h2", {"class": "s9Header"}).get_text()
         for app in row.select("a.title.ntTitle.noLinkDecoration"):
-            appResult = {}
-            appResult["appId"]   = self.extractAppIDFromLink(app["href"])
+            appResult            = {}
             appResult["appName"] = app["title"]
-            appResult["appIcon"] = app.find("div", {"class": "imageContainer"}).find('img').get("src")
+            appResult["appId"]   = self.extractAppIDFromLink(app["href"])
+            appResult["appIcon"] = self.appIconSelector(app.find("div", {"class": "imageContainer"}).find('img'))
 
             appsArray.append(appResult)
 
@@ -40,3 +38,9 @@ class MainPageScraper:
         # HREF is built like /NBC-News-Digital-LLC-TODAY/dp/B00E5Q5GN6
         # where the last element is the id of the app.
         return linkString.split("/dp/")[1]
+
+    def appIconSelector(self, imgElement):
+        if imgElement.get("url") is None:
+            return imgElement.get("src")
+        else:
+            return imgElement.get("url")
