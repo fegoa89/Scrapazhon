@@ -48,4 +48,4 @@ class MainPageScraperTest(unittest.TestCase):
             for appInfo in rowResult['apps']:
                 self.assertEqual(url(appInfo["appIcon"]), True)
                 self.assertEqual(isinstance(appInfo["appName"], basestring), True)
-                self.assertEqual(isinstance(appInfo["appIcon"], basestring), True)
+                self.assertEqual(isinstance(appInfo["appId"], basestring), True)
