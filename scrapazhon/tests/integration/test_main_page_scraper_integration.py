@@ -6,6 +6,10 @@ import scrapazhon
 
 import bs4
 
+import validators
+
+from validators import url
+
 from unittest           import TestCase
 
 from scrapazhon.request import Request
@@ -34,12 +38,14 @@ class MainPageScraperTest(unittest.TestCase):
             self.assertEqual(rowResult.keys(), ['apps', 'rowLabel'])
 
     def app_dictionary_response_test(self):
-        # Tests that each hash within each app response contains three keys:
-        # appIcon - app icon url
-        # appId   - amazon app store app id
-        # appName - Name of the app
+        # Tests that each hash contains three keys with a valid format:
+        # appIcon - app icon url            - url format
+        # appId   - amazon app store app id - string
+        # appName - Name of the app         - string
         response = MainPageScraper(self.rawHtml).collectApps()
 
         for rowResult in response:
             for appInfo in rowResult['apps']:
-                self.assertEqual(appInfo.keys(), ['appIcon', 'appId', 'appName'])
+                self.assertEqual(url(appInfo["appIcon"]), True)
+                self.assertEqual(isinstance(appInfo["appName"], basestring), True)
+                self.assertEqual(isinstance(appInfo["appIcon"], basestring), True)
