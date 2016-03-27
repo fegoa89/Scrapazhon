@@ -6,6 +6,8 @@ import scrapazhon
 
 import bs4
 
+import json
+
 from unittest           import TestCase
 
 from scrapazhon.request import Request
@@ -19,7 +21,9 @@ from bs4 import BeautifulSoup
 class RequestTest(unittest.TestCase):
 
     def setUp(self):
-        self.requestObject = Request("http://www.amazon.com/appstore").getHtmlFromUrl()
+        with open('scrapazhon/tests/integration/fixtures/main_page_html_response.json') as data_file:
+            self.requestObject = json.load(data_file)
+
         return self.requestObject
 
     def valid_response_code_test(self):
