@@ -22,9 +22,15 @@
 # approximate download time
 
 from bs4 import BeautifulSoup
+
 import time
 
 import pprint
+
+import parsedatetime
+
+from datetime import datetime
+from time     import mktime
 
 class AppMetaDataScraper:
     def __init__(self, raw_html):
@@ -42,6 +48,8 @@ class AppMetaDataScraper:
         metaDataDictionary["appPublisherName"] = self.appPublisherName()
         metaDataDictionary["customerReviewsCount"] = self.customerReviewsCount()
         metaDataDictionary["averageCustomerReview"] = self.averageCustomerReview()
+        metaDataDictionary["latestUpdateDate"] = self.latestUpdateDate()
+        metaDataDictionary["releaseDate"] = self.releaseDate()
         pprint.pprint(metaDataDictionary)
 
     def appId(self):
@@ -97,6 +105,38 @@ class AppMetaDataScraper:
         reviewAverage = self.soupObject().find("span", { "class":"dpAppstore%s" % (self.appId()) })
         reviewAverageNumber = reviewAverage.find("a", {"class":"a-link-normal a-text-normal"}).get_text().replace(" out of 5 stars","").strip()
         return float(reviewAverageNumber)
+
+    def releaseDate(self):
+        try:
+            releaseDate = self.productDetailsTable()["original_release_date"]
+            time_struct, parse_status = parsedatetime.Calendar().parse(releaseDate)
+            if parse_status:
+                return datetime.fromtimestamp(mktime(time_struct))
+        except TypeError:
+            print("Can not parse release date.")
+
+
+    def latestUpdateDate(self):
+        try:
+            updateDate = self.productDetailsTable()["latest_developer_update"]
+            time_struct, parse_status = parsedatetime.Calendar().parse(updateDate)
+            if parse_status:
+                return datetime.fromtimestamp(mktime(time_struct))
+        except TypeError:
+            print("Can not parse latest update date.")
+
+    def productDetailsTable(self):
+        detailsList = self.soupObject().find("table", {"id":"productDetailsTable"}).find_all('li')
+        dicDetailsResult = {}
+        for detail in detailsList:
+            try:
+                liElement = detail.get_text().split(":")
+                dictKey = liElement[0].strip().lower().replace(" ", "_")
+                dicDetailsResult[dictKey] = liElement[1::1][0].strip()
+            except IndexError:
+                pass
+
+        return dicDetailsResult
 
     def soupObject(self):
         soup = BeautifulSoup(self.rawHtml, "lxml")
