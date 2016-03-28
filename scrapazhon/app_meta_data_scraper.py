@@ -48,8 +48,8 @@ class AppMetaDataScraper:
         metaDataDictionary["appPublisherName"] = self.appPublisherName()
         metaDataDictionary["customerReviewsCount"] = self.customerReviewsCount()
         metaDataDictionary["averageCustomerReview"] = self.averageCustomerReview()
-        metaDataDictionary["latestUpdateDate"] = self.latestUpdateDate()
-        metaDataDictionary["releaseDate"] = self.releaseDate()
+        metaDataDictionary["latestUpdateDate"] = self.getAppDate("latest_developer_update")
+        metaDataDictionary["releaseDate"] = self.getAppDate("original_release_date")
         pprint.pprint(metaDataDictionary)
 
     def appId(self):
@@ -106,24 +106,14 @@ class AppMetaDataScraper:
         reviewAverageNumber = reviewAverage.find("a", {"class":"a-link-normal a-text-normal"}).get_text().replace(" out of 5 stars","").strip()
         return float(reviewAverageNumber)
 
-    def releaseDate(self):
+    def getAppDate(self, dateFieldKey):
         try:
-            releaseDate = self.productDetailsTable()["original_release_date"]
-            time_struct, parse_status = parsedatetime.Calendar().parse(releaseDate)
+            date = self.productDetailsTable()[dateFieldKey]
+            time_struct, parse_status = parsedatetime.Calendar().parse(date)
             if parse_status:
                 return datetime.fromtimestamp(mktime(time_struct))
         except TypeError:
-            print("Can not parse release date.")
-
-
-    def latestUpdateDate(self):
-        try:
-            updateDate = self.productDetailsTable()["latest_developer_update"]
-            time_struct, parse_status = parsedatetime.Calendar().parse(updateDate)
-            if parse_status:
-                return datetime.fromtimestamp(mktime(time_struct))
-        except TypeError:
-            print("Can not parse latest update date.")
+            print("Can not parse %s" % dateFieldKey)
 
     def productDetailsTable(self):
         detailsList = self.soupObject().find("table", {"id":"productDetailsTable"}).find_all('li')
