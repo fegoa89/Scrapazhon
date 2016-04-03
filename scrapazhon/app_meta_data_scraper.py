@@ -14,7 +14,7 @@
 # release date
 # latest update date
 # latest update comment
-# rating definition
+# rated on category
 # app features
 # app description
 # size
@@ -50,6 +50,7 @@ class AppMetaDataScraper:
         metaDataDictionary["averageCustomerReview"] = self.averageCustomerReview()
         metaDataDictionary["latestUpdateDate"] = self.getAppDate("latest_developer_update")
         metaDataDictionary["releaseDate"] = self.getAppDate("original_release_date")
+        metaDataDictionary["ratedOnCategory"] = self.ratedOnCategory()
         pprint.pprint(metaDataDictionary)
 
     def appId(self):
@@ -127,6 +128,9 @@ class AppMetaDataScraper:
                 pass
 
         return dicDetailsResult
+
+    def ratedOnCategory(self):
+        return self.soupObject().find("span", {"id":"mas_product_rating_defintions"}).get_text().strip()
 
     def soupObject(self):
         soup = BeautifulSoup(self.rawHtml, "lxml")
