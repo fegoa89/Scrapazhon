@@ -51,6 +51,7 @@ class AppMetaDataScraper:
         metaDataDictionary["latestUpdateDate"] = self.getAppDate("latest_developer_update")
         metaDataDictionary["releaseDate"] = self.getAppDate("original_release_date")
         metaDataDictionary["ratedOnCategory"] = self.ratedOnCategory()
+        metaDataDictionary["productFeatures"] = self.productFeatures()
         pprint.pprint(metaDataDictionary)
 
     def appId(self):
@@ -131,6 +132,17 @@ class AppMetaDataScraper:
 
     def ratedOnCategory(self):
         return self.soupObject().find("span", {"id":"mas_product_rating_defintions"}).get_text().strip()
+
+    def productFeatures(self):
+        detailsList = self.soupObject().find("div", {"id":"feature-bullets-btf"}).find_all('li')
+        detailsResultArray = []
+        for detail in detailsList:
+            try:
+                detailsResultArray.append(detail.get_text())
+            except IndexError:
+                pass
+
+        return detailsResultArray
 
     def soupObject(self):
         soup = BeautifulSoup(self.rawHtml, "lxml")
