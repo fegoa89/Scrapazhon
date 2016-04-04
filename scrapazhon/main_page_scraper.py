@@ -7,40 +7,40 @@ class MainPageScraper:
         # Initializer
         self.raw_html = raw_html
 
-    def collectApps(self):
+    def collect_apps(self):
         print("Parsing HTML")
         soup = BeautifulSoup(self.raw_html, "lxml")
-        listOfAppsInMainPage = []
+        list_of_apps_in_main_page = []
         # Goes through all the rows (like "Games for You" or "Apps for you") on the main page
         for row in soup.select("div.a-section.unified_widget.rcm.widget.rcm.s9Widget"):
-            listOfAppsInMainPage.append(self.appsInRow(row))
+            list_of_apps_in_main_page.append(self.apps_in_row(row))
 
-        return listOfAppsInMainPage
+        return list_of_apps_in_main_page
 
-    def appsInRow(self, row):
-        rowHash             = {}
-        appsArray           = []
-        rowHash["apps"]     = []
-        rowHash["rowLabel"] = row.find("h2", {"class": "s9Header"}).get_text()
+    def apps_in_row(self, row):
+        row_hash             = {}
+        apps_array           = []
+        row_hash["apps"]     = []
+        row_hash["rowLabel"] = row.find("h2", {"class": "s9Header"}).get_text()
         for app in row.select("a.title.ntTitle.noLinkDecoration"):
-            appResult            = {}
-            appResult["appName"] = app["title"]
-            appResult["appId"]   = self.extractAppIDFromLink(app["href"])
-            appResult["appIcon"] = self.appIconSelector(app.find("div", {"class": "imageContainer"}).find('img'))
+            app_result            = {}
+            app_result["appName"] = app["title"]
+            app_result["appId"]   = self.extract_app_id_from_link(app["href"])
+            app_result["appIcon"] = self.app_icon_selector(app.find("div", {"class": "imageContainer"}).find('img'))
 
-            appsArray.append(appResult)
+            apps_array.append(app_result)
 
-        rowHash["apps"] = appsArray
+        row_hash["apps"] = apps_array
 
-        return rowHash
+        return row_hash
 
-    def extractAppIDFromLink(self, linkString):
+    def extract_app_id_from_link(self, link_string):
         # HREF is built like /NBC-News-Digital-LLC-TODAY/dp/B00E5Q5GN6
         # where the last element is the id of the app.
-        return linkString.split("/dp/")[1]
+        return link_string.split("/dp/")[1]
 
-    def appIconSelector(self, imgElement):
-        if imgElement.get("url") is None:
-            return imgElement.get("src")
+    def app_icon_selector(self, img_element):
+        if img_element.get("url") is None:
+            return img_element.get("src")
         else:
-            return imgElement.get("url")
+            return img_element.get("url")

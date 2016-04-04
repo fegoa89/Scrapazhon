@@ -13,7 +13,7 @@ class MainPageApps:
         self.url = "http://www.amazon.com/appstore"
 
     def scrape(self):
-        MainPageScraper(self.htmlResponse()).collectApps()
+        MainPageScraper(self.htmlResponse()).collect_apps()
 
     def htmlResponse(self):
         return Request(self.url).getHtmlFromUrl()["response"]

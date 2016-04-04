@@ -1,5 +1,6 @@
 import json
 import os
+import scrapazhon
 from   scrapazhon.request import Request
 
 mainPageHtmlResponse = Request("http://www.amazon.com/appstore").getHtmlFromUrl()
