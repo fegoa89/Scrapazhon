@@ -29,12 +29,12 @@ class RequestTest(unittest.TestCase):
     @raises(Exception)
     def url_error_exception_test(self):
         request_object = Request("htwwqtp://@@@@com/appstore")
-        self.assertRaises(URLError, request_object.getHtmlFromUrl())
+        self.assertRaises(URLError, request_object.get_html_from_url())
 
     @raises(Exception)
     def http_error_exception_test(self):
         request = Request('http://www.amazon.com/holahellohalloczesc')
-        self.assertRaises(HTTPError, request_object.getHtmlFromUrl())
+        self.assertRaises(HTTPError, request_object.get_html_from_url())
 
     def tearDown(self):
         self.patcher.stop()

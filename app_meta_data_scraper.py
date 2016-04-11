@@ -14,15 +14,15 @@ from scrapazhon.app_meta_data_scraper import AppMetaDataScraper
 class AppMetaData:
     def __init__(self, appId):
     	self.appId = appId
-        self.url = self.buildAppPageUrl(self.appId)
+        self.url = self.build_app_page_url(self.appId)
 
     def scrape(self):
-        AppMetaDataScraper(self.htmlResponse()).collectMetaData()
+        AppMetaDataScraper(self.html_response()).collectMetaData()
 
-    def htmlResponse(self):
-        return Request(self.url).getHtmlFromUrl()["response"]
+    def html_response(self):
+        return Request(self.url).get_html_from_url()["response"]
 
-    def buildAppPageUrl(self, appId):
+    def build_app_page_url(self, appId):
     	return "http://www.amazon.com/dp/" + appId
 
 AppMetaData("B018IKM114").scrape()

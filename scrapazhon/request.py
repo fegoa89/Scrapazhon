@@ -7,7 +7,7 @@ class Request:
         # Initializer
         self.url = url
 
-    def getHtmlFromUrl(self):
+    def get_html_from_url(self):
         print("Executing request for url : %s" % self.url)
         req = urllib2.Request(self.url)
         try:
