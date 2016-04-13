@@ -6,23 +6,23 @@ import bs4
 
 import scrapazhon
 
-from bs4                          	  import BeautifulSoup
-from scrapazhon.request           	  import Request
+from bs4                              import BeautifulSoup
+from scrapazhon.request               import Request
 from scrapazhon.app_meta_data_scraper import AppMetaDataScraper
 
 
 class AppMetaData:
-    def __init__(self, appId):
-    	self.appId = appId
-        self.url = self.build_app_page_url(self.appId)
+    def __init__(self, app_id):
+        self.app_id = app_id
+        self.url = self.build_app_page_url(self.app_id)
 
     def scrape(self):
-        AppMetaDataScraper(self.html_response()).collectMetaData()
+        AppMetaDataScraper(self.html_response()).collect_meta_data()
 
     def html_response(self):
         return Request(self.url).get_html_from_url()["response"]
 
-    def build_app_page_url(self, appId):
-    	return "http://www.amazon.com/dp/" + appId
+    def build_app_page_url(self, app_id):
+        return "http://www.amazon.com/dp/" + app_id
 
 AppMetaData("B018IKM114").scrape()

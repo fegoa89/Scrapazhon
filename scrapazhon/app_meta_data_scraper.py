@@ -36,7 +36,7 @@ class AppMetaDataScraper:
     def __init__(self, raw_html):
         self.rawHtml = raw_html
 
-    def collectMetaData(self):
+    def collect_meta_data(self):
         meta_data_dictionary = {}
         meta_data_dictionary["app_id"] = self.app_id()
         meta_data_dictionary["app_name"] = self.app_name()
