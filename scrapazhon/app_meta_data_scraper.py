@@ -37,35 +37,35 @@ class AppMetaDataScraper:
         self.rawHtml = raw_html
 
     def collectMetaData(self):
-        metaDataDictionary = {}
-        metaDataDictionary["appId"] = self.appId()
-        metaDataDictionary["appName"] = self.appName()
-        metaDataDictionary["appIcon"] = self.appIcon()
-        metaDataDictionary["screenshots"] = self.screenshots()
-        metaDataDictionary["categoriesId"] = self.categoriesId()
-        metaDataDictionary["keywords"] = self.keywords()
-        metaDataDictionary["price"] = self.price()
-        metaDataDictionary["appPublisherName"] = self.appPublisherName()
-        metaDataDictionary["customerReviewsCount"] = self.customerReviewsCount()
-        metaDataDictionary["averageCustomerReview"] = self.averageCustomerReview()
-        metaDataDictionary["latestUpdateDate"] = self.getAppDate("latest_developer_update")
-        metaDataDictionary["releaseDate"] = self.getAppDate("original_release_date")
-        metaDataDictionary["ratedOnCategory"] = self.ratedOnCategory()
-        metaDataDictionary["productFeatures"] = self.productFeatures()
-        pprint.pprint(metaDataDictionary)
+        meta_data_dictionary = {}
+        meta_data_dictionary["app_id"] = self.app_id()
+        meta_data_dictionary["app_name"] = self.app_name()
+        meta_data_dictionary["app_icon"] = self.app_icon()
+        meta_data_dictionary["screenshots"] = self.screenshots()
+        meta_data_dictionary["categories_id"] = self.categories_id()
+        meta_data_dictionary["keywords"] = self.keywords()
+        meta_data_dictionary["price"] = self.price()
+        meta_data_dictionary["app_publisher_name"] = self.app_publisher_name()
+        meta_data_dictionary["customer_reviews_count"] = self.customer_reviews_count()
+        meta_data_dictionary["average_customer_review"] = self.average_customer_review()
+        meta_data_dictionary["latest_update_date"] = self.get_app_date("latest_developer_update")
+        meta_data_dictionary["release_date"] = self.get_app_date("original_release_date")
+        meta_data_dictionary["rated_on_category"] = self.rated_on_category()
+        meta_data_dictionary["product_features"] = self.product_features()
+        pprint.pprint(meta_data_dictionary)
 
-    def appId(self):
-        return self.soupObject().find("link", rel="canonical")["href"].split("/dp/")[1]
+    def app_id(self):
+        return self.soup_object().find("link", rel="canonical")["href"].split("/dp/")[1]
 
-    def appName(self):
-        return self.soupObject().find("span", {"id":"btAsinTitle"}).get_text()
+    def app_name(self):
+        return self.soup_object().find("span", {"id":"btAsinTitle"}).get_text()
 
-    def appIcon(self):
-        return self.soupObject().find("img", {"id":"js-masrw-main-image"})["src"]
+    def app_icon(self):
+        return self.soup_object().find("img", {"id":"js-masrw-main-image"})["src"]
 
     def screenshots(self):
         screenshots         = []
-        screenshotsArray = self.soupObject().find("ol", {"class":"a-carousel", "role":"list"}).findAll('li')
+        screenshotsArray = self.soup_object().find("ol", {"class":"a-carousel", "role":"list"}).findAll('li')
         for screenshot in screenshotsArray:
             # image src in source code contains an '._SL160_' string on the name :
             # (http://ecx.images-amazon.com/images/I/714RlrJ3iyL._SL160_.png)
@@ -75,9 +75,9 @@ class AppMetaDataScraper:
 
         return screenshots
 
-    def categoriesId(self):
+    def categories_id(self):
         categories = []
-        categoryBreadcrumb = self.soupObject().find("div", {"id":"wayfinding-breadcrumbs_feature_div"}).findAll('li')
+        categoryBreadcrumb = self.soup_object().find("div", {"id":"wayfinding-breadcrumbs_feature_div"}).findAll('li')
         for category in categoryBreadcrumb:
             anchorCategoryElement = category.find_all("a", {"class":"a-link-normal a-color-tertiary"})
             if len(anchorCategoryElement) > 0:
@@ -88,37 +88,37 @@ class AppMetaDataScraper:
         return categories
 
     def keywords(self):
-        return self.soupObject().find("meta", {"name":"keywords"})["content"].split(",")
+        return self.soup_object().find("meta", {"name":"keywords"})["content"].split(",")
 
     def price(self):
-        return self.soupObject().find("span", {"id":"actualPriceValue"}).get_text().strip()
+        return self.soup_object().find("span", {"id":"actualPriceValue"}).get_text().strip()
 
-    def appPublisherName(self):
-        return self.soupObject().find("div", {"class":"buying"}).find("a").get_text()
+    def app_publisher_name(self):
+        return self.soup_object().find("div", {"class":"buying"}).find("a").get_text()
 
-    def customerReviewsCount(self):
-        reviewCount = self.soupObject().find("span", { "class":"dpAppstore%s" % (self.appId()) })
+    def customer_reviews_count(self):
+        reviewCount = self.soup_object().find("span", { "class":"dpAppstore%s" % (self.app_id()) })
         # Strip and replace string
         reviewCountNumber = reviewCount.find("span", {"class":"a-size-small"}).get_text().replace(" customer reviews","").strip()
         # return as an integer
         return int(reviewCountNumber.replace(",",""))
 
-    def averageCustomerReview(self):
-        reviewAverage = self.soupObject().find("span", { "class":"dpAppstore%s" % (self.appId()) })
+    def average_customer_review(self):
+        reviewAverage = self.soup_object().find("span", { "class":"dpAppstore%s" % (self.app_id()) })
         reviewAverageNumber = reviewAverage.find("a", {"class":"a-link-normal a-text-normal"}).get_text().replace(" out of 5 stars","").strip()
         return float(reviewAverageNumber)
 
-    def getAppDate(self, dateFieldKey):
+    def get_app_date(self, dateFieldKey):
         try:
-            date = self.productDetailsTable()[dateFieldKey]
+            date = self.product_details_table()[dateFieldKey]
             time_struct, parse_status = parsedatetime.Calendar().parse(date)
             if parse_status:
                 return datetime.fromtimestamp(mktime(time_struct))
         except TypeError:
             print("Can not parse %s" % dateFieldKey)
 
-    def productDetailsTable(self):
-        detailsList = self.soupObject().find("table", {"id":"productDetailsTable"}).find_all('li')
+    def product_details_table(self):
+        detailsList = self.soup_object().find("table", {"id":"productDetailsTable"}).find_all('li')
         dicDetailsResult = {}
         for detail in detailsList:
             try:
@@ -130,11 +130,11 @@ class AppMetaDataScraper:
 
         return dicDetailsResult
 
-    def ratedOnCategory(self):
-        return self.soupObject().find("span", {"id":"mas_product_rating_defintions"}).get_text().strip()
+    def rated_on_category(self):
+        return self.soup_object().find("span", {"id":"mas_product_rating_defintions"}).get_text().strip()
 
-    def productFeatures(self):
-        detailsList = self.soupObject().find("div", {"id":"feature-bullets-btf"}).find_all('li')
+    def product_features(self):
+        detailsList = self.soup_object().find("div", {"id":"feature-bullets-btf"}).find_all('li')
         detailsResultArray = []
         for detail in detailsList:
             try:
@@ -144,6 +144,6 @@ class AppMetaDataScraper:
 
         return detailsResultArray
 
-    def soupObject(self):
+    def soup_object(self):
         soup = BeautifulSoup(self.rawHtml, "lxml")
         return soup
