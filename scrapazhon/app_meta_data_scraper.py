@@ -34,7 +34,7 @@ from time     import mktime
 
 class AppMetaDataScraper:
     def __init__(self, raw_html):
-        self.rawHtml = raw_html
+        self.raw_html = raw_html
 
     def collect_meta_data(self):
         meta_data_dictionary = {}
@@ -65,8 +65,8 @@ class AppMetaDataScraper:
 
     def screenshots(self):
         screenshots         = []
-        screenshotsArray = self.soup_object().find("ol", {"class":"a-carousel", "role":"list"}).findAll('li')
-        for screenshot in screenshotsArray:
+        screenshots_array = self.soup_object().find("ol", {"class":"a-carousel", "role":"list"}).findAll('li')
+        for screenshot in screenshots_array:
             # image src in source code contains an '._SL160_' string on the name :
             # (http://ecx.images-amazon.com/images/I/714RlrJ3iyL._SL160_.png)
             # it represents the small preview of the screenshot, without it shows
@@ -77,13 +77,13 @@ class AppMetaDataScraper:
 
     def categories_id(self):
         categories = []
-        categoryBreadcrumb = self.soup_object().find("div", {"id":"wayfinding-breadcrumbs_feature_div"}).findAll('li')
-        for category in categoryBreadcrumb:
-            anchorCategoryElement = category.find_all("a", {"class":"a-link-normal a-color-tertiary"})
-            if len(anchorCategoryElement) > 0:
+        category_breadcrumb = self.soup_object().find("div", {"id":"wayfinding-breadcrumbs_feature_div"}).findAll('li')
+        for category in category_breadcrumb:
+            anchor_category_element = category.find_all("a", {"class":"a-link-normal a-color-tertiary"})
+            if len(anchor_category_element) > 0:
                 # The category id's that this app belongs to is defined in the link 
                 # of the breadcrumb.
-                categories.append(int(anchorCategoryElement[0]["href"].split("node=")[1]))
+                categories.append(int(anchor_category_element[0]["href"].split("node=")[1]))
 
         return categories
 
@@ -97,53 +97,53 @@ class AppMetaDataScraper:
         return self.soup_object().find("div", {"class":"buying"}).find("a").get_text()
 
     def customer_reviews_count(self):
-        reviewCount = self.soup_object().find("span", { "class":"dpAppstore%s" % (self.app_id()) })
+        review_count = self.soup_object().find("span", { "class":"dpAppstore%s" % (self.app_id()) })
         # Strip and replace string
-        reviewCountNumber = reviewCount.find("span", {"class":"a-size-small"}).get_text().replace(" customer reviews","").strip()
+        review_count_number = review_count.find("span", {"class":"a-size-small"}).get_text().replace(" customer reviews","").strip()
         # return as an integer
-        return int(reviewCountNumber.replace(",",""))
+        return int(review_count_number.replace(",",""))
 
     def average_customer_review(self):
-        reviewAverage = self.soup_object().find("span", { "class":"dpAppstore%s" % (self.app_id()) })
-        reviewAverageNumber = reviewAverage.find("a", {"class":"a-link-normal a-text-normal"}).get_text().replace(" out of 5 stars","").strip()
-        return float(reviewAverageNumber)
+        review_average = self.soup_object().find("span", { "class":"dpAppstore%s" % (self.app_id()) })
+        review_average_number = review_average.find("a", {"class":"a-link-normal a-text-normal"}).get_text().replace(" out of 5 stars","").strip()
+        return float(review_average_number)
 
-    def get_app_date(self, dateFieldKey):
+    def get_app_date(self, date_field_key):
         try:
-            date = self.product_details_table()[dateFieldKey]
+            date = self.product_details_table()[date_field_key]
             time_struct, parse_status = parsedatetime.Calendar().parse(date)
             if parse_status:
                 return datetime.fromtimestamp(mktime(time_struct))
         except TypeError:
-            print("Can not parse %s" % dateFieldKey)
+            print("Can not parse %s" % date_field_key)
 
     def product_details_table(self):
-        detailsList = self.soup_object().find("table", {"id":"productDetailsTable"}).find_all('li')
-        dicDetailsResult = {}
-        for detail in detailsList:
+        details_list = self.soup_object().find("table", {"id":"productDetailsTable"}).find_all('li')
+        dic_details_result = {}
+        for detail in details_list:
             try:
-                liElement = detail.get_text().split(":")
-                dictKey = liElement[0].strip().lower().replace(" ", "_")
-                dicDetailsResult[dictKey] = liElement[1::1][0].strip()
+                li_element = detail.get_text().split(":")
+                dict_key = li_element[0].strip().lower().replace(" ", "_")
+                dic_details_result[dict_key] = li_element[1::1][0].strip()
             except IndexError:
                 pass
 
-        return dicDetailsResult
+        return dic_details_result
 
     def rated_on_category(self):
         return self.soup_object().find("span", {"id":"mas_product_rating_defintions"}).get_text().strip()
 
     def product_features(self):
-        detailsList = self.soup_object().find("div", {"id":"feature-bullets-btf"}).find_all('li')
-        detailsResultArray = []
-        for detail in detailsList:
+        details_list = self.soup_object().find("div", {"id":"feature-bullets-btf"}).find_all('li')
+        details_result_array = []
+        for detail in details_list:
             try:
-                detailsResultArray.append(detail.get_text())
+                details_result_array.append(detail.get_text())
             except IndexError:
                 pass
 
-        return detailsResultArray
+        return details_result_array
 
     def soup_object(self):
-        soup = BeautifulSoup(self.rawHtml, "lxml")
+        soup = BeautifulSoup(self.raw_html, "lxml")
         return soup
