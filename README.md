@@ -1,5 +1,4 @@
 # Scrapazhon
---------
 
 Scrapes Amazon App Store with Python
 
