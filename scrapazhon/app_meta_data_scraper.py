@@ -52,6 +52,7 @@ class AppMetaDataScraper:
         meta_data_dictionary["release_date"] = self.get_app_date("original_release_date")
         meta_data_dictionary["rated_on_category"] = self.rated_on_category()
         meta_data_dictionary["product_features"] = self.product_features()
+        meta_data_dictionary["app_description"] = self.app_description()
         pprint.pprint(meta_data_dictionary)
 
     def app_id(self):
@@ -143,6 +144,10 @@ class AppMetaDataScraper:
                 pass
 
         return details_result_array
+
+    def app_description(self):
+        description = self.soup_object().find("div", {"id":"mas-product-description"}).find("div", {"class":"a-row masrw-content-row"}).get_text().strip()
+        return description
 
     def soup_object(self):
         soup = BeautifulSoup(self.raw_html, "lxml")
