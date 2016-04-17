@@ -39,7 +39,7 @@ class MainPageScraperTest(unittest.TestCase):
         response = MainPageScraper(self.raw_html["response"]).collect_apps()
 
         for row_result in response:
-            self.assertEqual(row_result.keys(), ['apps', 'rowLabel'])
+            self.assertEqual(row_result.keys(), ['row_label', 'apps'])
 
     def app_dictionary_response_test(self):
         # Tests that each hash contains three keys with a valid format:
@@ -50,6 +50,6 @@ class MainPageScraperTest(unittest.TestCase):
 
         for row_result in response:
             for app_info in row_result['apps']:
-                self.assertEqual(url(app_info["appIcon"]), True)
-                self.assertEqual(isinstance(app_info["appName"], basestring), True)
-                self.assertEqual(isinstance(app_info["appId"], basestring), True)
+                self.assertEqual(url(app_info["app_icon"]), True)
+                self.assertEqual(isinstance(app_info["app_name"], basestring), True)
+                self.assertEqual(isinstance(app_info["app_id"], basestring), True)

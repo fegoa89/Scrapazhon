@@ -21,12 +21,12 @@ class MainPageScraper:
         row_hash             = {}
         apps_array           = []
         row_hash["apps"]     = []
-        row_hash["rowLabel"] = row.find("h2", {"class": "s9Header"}).get_text()
+        row_hash["row_label"] = row.find("h2", {"class": "s9Header"}).get_text()
         for app in row.select("a.title.ntTitle.noLinkDecoration"):
             app_result            = {}
-            app_result["appName"] = app["title"]
-            app_result["appId"]   = self.extract_app_id_from_link(app["href"])
-            app_result["appIcon"] = self.app_icon_selector(app.find("div", {"class": "imageContainer"}).find('img'))
+            app_result["app_name"] = app["title"]
+            app_result["app_id"]   = self.extract_app_id_from_link(app["href"])
+            app_result["app_icon"] = self.app_icon_selector(app.find("div", {"class": "imageContainer"}).find('img'))
 
             apps_array.append(app_result)
 
