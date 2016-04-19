@@ -53,7 +53,8 @@ class AppMetaDataScraper:
         meta_data_dictionary["rated_on_category"] = self.rated_on_category()
         meta_data_dictionary["product_features"] = self.product_features()
         meta_data_dictionary["app_description"] = self.app_description()
-        pprint.pprint(meta_data_dictionary)
+
+        return meta_data_dictionary
 
     def app_id(self):
         return self.soup_object().find("link", rel="canonical")["href"].split("/dp/")[1]
