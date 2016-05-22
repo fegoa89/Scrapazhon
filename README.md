@@ -4,6 +4,27 @@ Scrapes Amazon App Store with Python
 
 > Work in progress, This package is not finalized yet.
 
+## Update test fixtures
+
+```python
+import json
+import os
+import scrapazhon
+from   scrapazhon.request import Request
+
+app_page_html_response = Request("http://www.amazon.com/dp/B018IKM114").get_html_from_url()
+
+with open('scrapazhon/tests/integration/fixtures/app_page_html_response.json', 'w') as outfile:
+    json.dump(app_page_html_response, outfile)
+
+
+main_page_html_response = Request("http://www.amazon.com/appstore").get_html_from_url()
+
+with open('scrapazhon/tests/integration/fixtures/main_page_html_response.json', 'w') as outfile:
+    json.dump(main_page_html_response, outfile)
+
+```
+
 ## Main Page Scraper
 
 Returns the list of apps that appears on amazon App Store ( "http://www.amazon.com/appstore" ). 
