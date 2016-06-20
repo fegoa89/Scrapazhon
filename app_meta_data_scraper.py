@@ -23,6 +23,6 @@ class AppMetaData:
         return Request(self.url).get_html_from_url()["response"]
 
     def build_app_page_url(self, app_id):
-        return "http://www.amazon.com/dp/" + app_id
+        return "https://www.amazon.com/gp/product/" + app_id
 
 AppMetaData("B018IKM114").scrape()

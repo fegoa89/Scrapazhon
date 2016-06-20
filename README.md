@@ -56,3 +56,42 @@ Each of those list is a representation of the apps that appears within each row.
       'app_name': 'Coin Dozer'}]
 }]
 ```
+
+
+## App Meta Data Scraper
+
+Returns the metadata for an app .
+
+
+```python
+{'app_icon': 'https://images-na.ssl-images-amazon.com/images/I/6102ToQv2YL.png',
+ 'app_id': 'B018IKM114',
+ 'app_name': u'Peppa Pig: Holiday',
+ 'app_publisher_name': u'Entertainment One Ltd',
+ 'average_customer_review': 4.1,
+ 'categories_id': [2350149011, 9408582011, 9408584011],
+ 'customer_reviews_count': 45,
+ 'keywords': ['Peppa Pig: Holiday', 'Entertainment One Ltd'],
+ 'latest_update_date': datetime.datetime(2016, 2, 10, 15, 47, 35),
+ 'price': u'$2.99',
+ 'product_features': [u'5 x fun-filled games featuring Peppa, George and their family and friends:',
+                      u'Take part in a swimming race',
+                      u'Make a pizza with Peppa and George',
+                      u'Help Aunty Goat make delicious ice-cream for everyone',
+                      u'Travel through the airport',
+                      u'Dress Peppa and George for the beach',
+                      u"Create a postcard to capture Peppa's holiday adventure",
+                      u'Singalong to the Sky High Song',
+                      u'Sticker rewards'],
+ 'rated_on_category': u'All Ages',
+ 'release_date': datetime.datetime(2015, 12, 4, 15, 47, 35),
+ 'screenshots': ['https://images-na.ssl-images-amazon.com/images/I/714RlrJ3iyL.png',
+                 'https://images-na.ssl-images-amazon.com/images/I/71uAlAW1eXL.png',
+                 'https://images-na.ssl-images-amazon.com/images/I/71-Cuor98VL.png',
+                 'https://images-na.ssl-images-amazon.com/images/I/71W6WGv%2BrTL.png',
+                 'https://images-na.ssl-images-amazon.com/images/I/81leirTtN%2BL.png',
+                 'https://images-na.ssl-images-amazon.com/images/I/719b9sf6gmL.png',
+                 'https://images-na.ssl-images-amazon.com/images/I/81CjYfvk8aL.png'],
+'app_description': u'Back by popular demand and relaunched for 2015. Peppa is going on holiday and she wants you to join her travels in this official app.If you have bought the app previously and download it HERE for a second time, you will be charged again.Fans of the show will love this holiday inspired adventure, which encourages them to explore the wonderful world of Peppa through interactive games and activities, featuring much loved characters, music and sound effects.No adverts, no in-app purchases, just lots of holiday fun!Please note: This app is not compatible with the iPad 1'}
+
+```
