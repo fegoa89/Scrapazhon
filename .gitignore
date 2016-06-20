@@ -10,3 +10,5 @@
 /build/
 
 /scrapazhon/tests/integration/fixtures/*
+
+/env/
