@@ -101,7 +101,7 @@ class AppMetaDataScraper:
     def customer_reviews_count(self):
         review_count = self.soup_object().find("span", { "class":"dpAppstore%s" % (self.app_id()) })
         # Strip and replace string
-        review_count_number = review_count.find("span", {"class":"a-size-small"}).get_text().replace(" customer reviews","").strip()
+        review_count_number = review_count.find("span", {"class":"a-size-small"}).get_text().replace(" customer reviews","").replace(" customer review","").strip()
         # return as an integer
         return int(review_count_number.replace(",",""))
 
