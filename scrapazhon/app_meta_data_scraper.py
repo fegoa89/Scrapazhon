@@ -93,7 +93,11 @@ class AppMetaDataScraper:
         return self.soup_object().find("meta", {"name":"keywords"})["content"].split(",")
 
     def price(self):
-        return self.soup_object().find("span", {"id":"actualPriceValue"}).get_text().strip()
+        app_price = self.soup_object().find("span", {"id":"actualPriceValue"})
+        if app_price is not None:
+            return app_price.get_text().strip()
+        else:
+            return "Free"
 
     def app_publisher_name(self):
         return self.soup_object().find("div", {"class":"buying"}).find("a").get_text()
