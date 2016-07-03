@@ -1,26 +1,3 @@
-# This class scrapes the MetaData for a given app:
-# app id
-# app name
-# icon
-# screenshots
-# categoriesId
-# Keywords
-# price
-# app publisher name
-# customer reviews count
-# app permissions
-# average customer review
-# version
-# release date
-# latest update date
-# latest update comment
-# rated on category
-# app features
-# app description
-# size
-# minimum operating system
-# approximate download time
-
 from bs4 import BeautifulSoup
 
 import time
@@ -53,6 +30,7 @@ class AppMetaDataScraper:
         meta_data_dictionary["rated_on_category"] = self.rated_on_category()
         meta_data_dictionary["product_features"] = self.product_features()
         meta_data_dictionary["app_description"] = self.app_description()
+        meta_data_dictionary["in_app_purchases"] = self.in_app_purchases()
 
         return meta_data_dictionary
 
@@ -153,6 +131,14 @@ class AppMetaDataScraper:
     def app_description(self):
         description = self.soup_object().find("div", {"id":"mas-product-description"}).find("div", {"class":"a-row masrw-content-row"}).get_text().strip()
         return description
+
+    def in_app_purchases(self):
+        in_app_purchases = self.soup_object().find("span", {"id":"offer_inapp_popover"})
+
+        if in_app_purchases is not None:
+            return True
+        else:
+            return False
 
     def soup_object(self):
         soup = BeautifulSoup(self.raw_html, "lxml")

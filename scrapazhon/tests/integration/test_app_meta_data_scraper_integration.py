@@ -92,3 +92,6 @@ class AppMetaDataScraperTest(unittest.TestCase):
 
     def app_description_test(self):
         self.assertEqual(isinstance(self.response["app_description"], basestring), True)
+
+    def in_app_purchases_test(self):
+        self.assertEqual(self.response["in_app_purchases"], False)
