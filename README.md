@@ -4,6 +4,24 @@ Scrapes Amazon App Store with Python
 
 > Work in progress, This package is not finalized yet.
 
+## Initial Setup
+
+I am using ```virtualenv``` as a tool to keep the dependencies required by different projects in separate places, by creating virtual Python environments for them.
+
+```
+pip install virtualenv
+virtualenv env
+source env/bin/activate
+pip install -r requirements.txt
+```
+
+## Tests
+
+Tests are written using nose as a test framework, you can run it with
+
+```
+nosetests scrapazhon/tests/
+```
 ## Update test fixtures
 
 ```python
