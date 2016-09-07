@@ -9,9 +9,10 @@ class Request:
 
     def get_html_from_url(self):
         print("Executing request for url : %s" % self.url)
-        req = urllib2.Request(self.url)
+        opener = urllib2.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
         try:
-            response = urllib2.urlopen(req)
+            response = opener.open(self.url)
         except HTTPError as e:
             print 'The server couldn\'t fulfill the request.'
             print 'Error code: ', e.code

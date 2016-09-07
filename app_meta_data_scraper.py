@@ -10,6 +10,7 @@ from bs4                              import BeautifulSoup
 from scrapazhon.request               import Request
 from scrapazhon.app_meta_data_scraper import AppMetaDataScraper
 
+import pprint
 
 class AppMetaData:
     def __init__(self, app_id):
@@ -17,7 +18,7 @@ class AppMetaData:
         self.url = self.build_app_page_url(self.app_id)
 
     def scrape(self):
-        AppMetaDataScraper(self.html_response()).collect_meta_data()
+        pprint.pprint(AppMetaDataScraper(self.html_response()).collect_meta_data())
 
     def html_response(self):
         return Request(self.url).get_html_from_url()["response"]

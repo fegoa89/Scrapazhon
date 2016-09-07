@@ -9,6 +9,7 @@ from scrapazhon.request               import Request
 from scrapazhon.top_charts_scraper    import TopChartsScraper
 
 import pprint
+
 class TopChartsApps:
 
     def scrape(self):
