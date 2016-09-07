@@ -12,7 +12,7 @@ I am using ```virtualenv``` as a tool to keep the dependencies required by diffe
 pip install virtualenv
 virtualenv env
 source env/bin/activate
-pip install -r requirements.txt
+sudo pip install -r requirements.txt
 ```
 
 ## Tests
